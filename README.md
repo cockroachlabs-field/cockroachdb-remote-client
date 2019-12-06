@@ -1,5 +1,5 @@
 # CockroachDB Remote Client
-Docker image used to perform simple tasks against a CockroachDB cluster then disappear.  For example, this can be useful for creating a database or setting configuration parameters, especially when used in Kubernetes or Docker Compose.  The following `docker-compose.yml` snippet highlights how it may be used: 
+Docker image used to perform simple tasks against a CockroachDB cluster then disappear.  For example, this can be useful for creating a database or setting configuration parameters, especially when used in Kubernetes or Docker Compose.  The following `docker-compose.yml` snippet highlights how it may be used, specifically the `crdb-init` service. 
 
 ```yaml
 services:
