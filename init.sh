@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo "cockroach host - ${COCKROACH_HOST}"
-echo "cockroach port - ${COCKROACH_PORT}"
-echo "cockroach user - ${COCKROACH_USER}"
-echo "cockroach insecure - ${COCKROACH_INSECURE}"
-echo "cockroach insecure - ${DATABASE_NAME}"
+echo "found COCKROACH_HOST - [${COCKROACH_HOST}]"
+echo "found COCKROACH_PORT - [${COCKROACH_PORT}]"
+echo "found COCKROACH_USER - [${COCKROACH_USER}]"
+echo "found COCKROACH_INSECURE - [${COCKROACH_INSECURE}]"
+echo "found DATABASE_NAME - [${DATABASE_NAME}]"
 
 ./cockroach sql --execute="CREATE DATABASE ${DATABASE_NAME};";
