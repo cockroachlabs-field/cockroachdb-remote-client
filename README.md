@@ -57,6 +57,8 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `COCKROACH_USER` - CockroachDB user that will own the remote client session
 * `COCKROACH_INSECURE` - Use an insecure connection.  Value must be `true`
 * `DATABASE_NAME` - Name of `database` to create
+* `COCKROACH_ORG` - The value of the `cluster.organization` setting
+* `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting
 
 ## Building the Image
 ```bash
