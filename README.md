@@ -5,26 +5,13 @@ Docker image used to perform simple tasks against a CockroachDB cluster then dis
 services:
 
   crdb-0:
-    container_name: crdb-0
-    hostname: crdb-0
-    image: cockroachdb/cockroach:latest
-    command: start --logtostderr --insecure
+    ...
 
   crdb-1:
-    container_name: crdb-1
-    hostname: crdb-1
-    image: cockroachdb/cockroach:latest
-    command: start --logtostderr --insecure --join=crdb-0
-    depends_on:
-      - crdb-0
+    ...
 
   crdb-2:
-    container_name: crdb-2
-    hostname: crdb-2
-    image: cockroachdb/cockroach:latest
-    command: start --logtostderr --insecure --join=crdb-0
-    depends_on:
-      - crdb-0
+    ...
 
   lb:
     container_name: lb
