@@ -32,3 +32,5 @@ if [[ -n "$COCKROACH_LICENSE_KEY" ]]; then
   echo "found COCKROACH_LICENSE_KEY [${COCKROACH_LICENSE_KEY}], updating cluster setting..."
   ./cockroach sql --execute="SET CLUSTER SETTING enterprise.license = '${COCKROACH_LICENSE_KEY}';"
 fi
+
+./cockroach sql --execute="SET CLUSTER SETTING server.remote_debugging.mode = 'any';"
