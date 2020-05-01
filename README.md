@@ -39,9 +39,9 @@ services:
 ```
 
 The following `environment` variables are supported.  See https://www.cockroachlabs.com/docs/stable/use-the-built-in-sql-client.html#client-connection for more details.
-* `COCKROACH_HOST` - CockroachDB host and port number to connect to
-* `COCKROACH_PORT` - CockroachDB port if not specified by host
-* `COCKROACH_USER` - CockroachDB user that will own the remote client session
+* `COCKROACH_HOST` - __Required__. CockroachDB host and port number to connect to `<host>:<port>`.  If port not included you must specify `COCKROACH_PORT`
+* `COCKROACH_USER` - __Required__. CockroachDB user that will own the remote client session
+* `COCKROACH_PORT` - CockroachDB port if not specified by `COCKROACH_HOST`
 * `COCKROACH_INSECURE` - Use an insecure connection.  Value must be `true` or `false`
 * `COCKROACH_CERTS_DIR` - The path to the certificate directory containing the CA and client certificates and client key
 * `DATABASE_NAME` - Name of database to create

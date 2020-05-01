@@ -39,7 +39,8 @@ fi
 
 ./cockroach sql --execute="SET CLUSTER SETTING server.remote_debugging.mode = 'any';"
 
-if [ -n "$DATABASE_USER" ] && [ -n "$DATABASE_PASSWORD" ]; then
+if [ -n "$DATABASE_USER" ] && [ -n "$DATABASE_PASSWORD" ] && [ -n "$DATABASE_NAME" ]; then
   echo "found DATABASE_USER [${DATABASE_USER}] and DATABASE_PASSWORD [${DATABASE_PASSWORD}], creating..."
   ./cockroach sql --execute="CREATE USER ${DATABASE_USER} WITH PASSWORD '${DATABASE_PASSWORD}';"
+  ./cockroach sql --execute="GRANT CREATE, INSERT, DELETE, UPDATE, SELECT ON ${DATABASE_NAME} TO ${DATABASE_USER};"
 fi
