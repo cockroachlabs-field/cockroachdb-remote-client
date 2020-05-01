@@ -45,6 +45,8 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `COCKROACH_INSECURE` - Use an insecure connection.  Value must be `true` or `false`
 * `COCKROACH_CERTS_DIR` - The path to the certificate directory containing the CA and client certificates and client key
 * `DATABASE_NAME` - Name of database to create
+* `DATABASE_USER` - Name of new database user to create
+* `DATABASE_PASSWORD` - Password for `DATABASE_USER`
 * `COCKROACH_ORG` - The value of the `cluster.organization` setting
 * `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting
 
