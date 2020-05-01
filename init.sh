@@ -18,6 +18,10 @@ if [[ -n "$COCKROACH_INSECURE" ]]; then
   echo "found COCKROACH_INSECURE [${COCKROACH_INSECURE}]"
 fi
 
+if [[ -n "$COCKROACH_CERTS_DIR" ]]; then
+  echo "found COCKROACH_CERTS_DIR [${COCKROACH_CERTS_DIR}]"
+fi
+
 if [[ -n "$DATABASE_NAME" ]]; then
   echo "found DATABASE_NAME [${DATABASE_NAME}], creating..."
   ./cockroach sql --execute="CREATE DATABASE ${DATABASE_NAME};"
