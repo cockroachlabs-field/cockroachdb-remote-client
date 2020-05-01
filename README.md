@@ -29,7 +29,7 @@ services:
   crdb-init:
     container_name: crdb-init
     hostname: crdb-init
-    image: timveil/cockroachdb-remote-client:latest
+    image: timveil/cockroachdb-remote-client:unstable
     environment:
       - COCKROACH_HOST=lb:5432
       - COCKROACH_INSECURE=true
@@ -52,17 +52,17 @@ The following `environment` variables are supported.  See https://www.cockroachl
 
 ## Building the Image
 ```bash
-docker build --no-cache -t timveil/cockroachdb-remote-client:latest .
+docker build --no-cache -t timveil/cockroachdb-remote-client:unstable .
 ```
 
 ## Publishing the Image
 ```bash
-docker push timveil/cockroachdb-remote-client:latest
+docker push timveil/cockroachdb-remote-client:unstable
 ```
 
 ## Running the Image
 ```bash
-docker run -it timveil/cockroachdb-remote-client:latest
+docker run -it timveil/cockroachdb-remote-client:unstable
 ```
 
 running the image with environment variables
@@ -71,5 +71,5 @@ docker run \
     --env COCKROACH_HOST=localhost:5432 \
     --env COCKROACH_INSECURE=true \
     --env DATABASE_NAME=test \
-    -it timveil/cockroachdb-remote-client:latest
+    -it timveil/cockroachdb-remote-client:unstable
 ```
