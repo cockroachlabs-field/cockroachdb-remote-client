@@ -16,11 +16,13 @@ services:
   lb:
     container_name: lb
     hostname: lb
-    build: haproxy
+    image: timveil/dynamic-haproxy:latest
     ports:
-      - "5432:5432"
+      - "26257:26257"
       - "8080:8080"
       - "8081:8081"
+    environment:
+      - NODES=crdb-0 crdb-1 crdb-2
     links:
       - crdb-0
       - crdb-1
@@ -31,7 +33,7 @@ services:
     hostname: crdb-init
     image: timveil/cockroachdb-remote-client:latest
     environment:
-      - COCKROACH_HOST=lb:5432
+      - COCKROACH_HOST=lb:26257
       - COCKROACH_INSECURE=true
       - DATABASE_NAME=test
     depends_on:
@@ -68,7 +70,7 @@ docker run -it timveil/cockroachdb-remote-client:latest
 running the image with environment variables
 ```bash
 docker run \
-    --env COCKROACH_HOST=localhost:5432 \
+    --env COCKROACH_HOST=localhost:26257 \
     --env COCKROACH_INSECURE=true \
     --env DATABASE_NAME=test \
     -it timveil/cockroachdb-remote-client:latest
