@@ -24,7 +24,7 @@ fi
 
 if [[ -n "$DATABASE_NAME" ]]; then
   echo "found DATABASE_NAME [${DATABASE_NAME}], creating..."
-  ./cockroach sql --execute="CREATE DATABASE ${DATABASE_NAME};"
+  ./cockroach sql --execute="CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME};"
 fi
 
 if [[ -n "$COCKROACH_ORG" ]]; then
