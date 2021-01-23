@@ -37,6 +37,11 @@ if [[ -n "$COCKROACH_LICENSE_KEY" ]]; then
   ./cockroach sql --execute="SET CLUSTER SETTING enterprise.license = '${COCKROACH_LICENSE_KEY}';"
 fi
 
+if [[ -n "$SERIAL_NORMALIZATION" ]]; then
+  echo "found SERIAL_NORMALIZATION [${SERIAL_NORMALIZATION}], updating cluster setting..."
+  ./cockroach sql --execute="SET CLUSTER SETTING sql.defaults.serial_normalization = '${SERIAL_NORMALIZATION}';"
+fi
+
 ./cockroach sql --execute="SET CLUSTER SETTING server.remote_debugging.mode = 'any';"
 
 if [ -n "$DATABASE_USER" ] && [ -n "$DATABASE_PASSWORD" ] && [ -n "$DATABASE_NAME" ]; then

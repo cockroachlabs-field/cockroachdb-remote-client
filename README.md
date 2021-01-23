@@ -51,6 +51,7 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `DATABASE_PASSWORD` - Password for `DATABASE_USER`.
 * `COCKROACH_ORG` - The value of the `cluster.organization` setting.
 * `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting.
+* `SERIAL_NORMALIZATION` - The value of the `sql.defaults.serial_normalization` setting.
 
 ## Building the Image
 ```bash
