@@ -1,4 +1,4 @@
-FROM cockroachdb/cockroach-unstable:v20.1.0
+FROM cockroachdb/cockroach:latest
 
 LABEL maintainer="tjveil@gmail.com"
 
