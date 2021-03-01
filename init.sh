@@ -24,7 +24,7 @@ fi
 
 if [[ -n "$DATABASE_NAME" ]]; then
   echo "found DATABASE_NAME [${DATABASE_NAME}], creating..."
-  ./cockroach sql --execute="CREATE DATABASE ${DATABASE_NAME};"
+  ./cockroach sql --execute="CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME};"
 fi
 
 if [[ -n "$COCKROACH_ORG" ]]; then
@@ -37,11 +37,16 @@ if [[ -n "$COCKROACH_LICENSE_KEY" ]]; then
   ./cockroach sql --execute="SET CLUSTER SETTING enterprise.license = '${COCKROACH_LICENSE_KEY}';"
 fi
 
+if [[ -n "$SERIAL_NORMALIZATION" ]]; then
+  echo "found SERIAL_NORMALIZATION [${SERIAL_NORMALIZATION}], updating cluster setting..."
+  ./cockroach sql --execute="SET CLUSTER SETTING sql.defaults.serial_normalization = '${SERIAL_NORMALIZATION}';"
+fi
+
 ./cockroach sql --execute="SET CLUSTER SETTING server.remote_debugging.mode = 'any';"
 
 if [ -n "$DATABASE_USER" ] && [ -n "$DATABASE_PASSWORD" ] && [ -n "$DATABASE_NAME" ]; then
   echo "found DATABASE_USER [${DATABASE_USER}] and DATABASE_PASSWORD [${DATABASE_PASSWORD}], creating..."
-  ./cockroach sql --execute="CREATE USER ${DATABASE_USER} WITH PASSWORD '${DATABASE_PASSWORD}';"
+  ./cockroach sql --execute="CREATE USER IF NOT EXISTS ${DATABASE_USER} WITH PASSWORD '${DATABASE_PASSWORD}';"
   ./cockroach sql --execute="GRANT ALL ON DATABASE ${DATABASE_NAME} TO ${DATABASE_USER};"
   ./cockroach sql --execute="GRANT admin TO ${DATABASE_USER};"
 fi
