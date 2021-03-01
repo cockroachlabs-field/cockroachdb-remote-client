@@ -24,7 +24,7 @@ fi
 
 if [[ -n "$COCKROACH_INIT_HOST" ]]; then
   echo "found COCKROACH_INIT_HOST [${COCKROACH_INIT_HOST}]"
-  ./cockroach init --host="$COCKROACH_INIT_HOST" --disable-cluster-name-verifications
+  ./cockroach init --host="$COCKROACH_INIT_HOST" --disable-cluster-name-verification
 fi
 
 if [[ -n "$DATABASE_NAME" ]]; then
