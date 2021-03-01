@@ -52,6 +52,7 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `COCKROACH_ORG` - The value of the `cluster.organization` setting.
 * `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting.
 * `SERIAL_NORMALIZATION` - The value of the `sql.defaults.serial_normalization` setting.
+* `COCKROACH_INIT_HOST` - The hostname or hostname and port of a node in the cluster against which to run `cockroach init`.  See [here](https://www.cockroachlabs.com/docs/stable/cockroach-init) for additional details.
 
 ## Building the Image
 ```bash

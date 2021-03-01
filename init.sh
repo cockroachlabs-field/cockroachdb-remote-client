@@ -22,6 +22,11 @@ if [[ -n "$COCKROACH_CERTS_DIR" ]]; then
   echo "found COCKROACH_CERTS_DIR [${COCKROACH_CERTS_DIR}]"
 fi
 
+if [[ -n "$COCKROACH_INIT_HOST" ]]; then
+  echo "found COCKROACH_INIT_HOST [${COCKROACH_INIT_HOST}]"
+  ./cockroach init --host="$COCKROACH_INIT_HOST"
+fi
+
 if [[ -n "$DATABASE_NAME" ]]; then
   echo "found DATABASE_NAME [${DATABASE_NAME}], creating..."
   ./cockroach sql --execute="CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME};"
