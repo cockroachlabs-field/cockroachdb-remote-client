@@ -55,6 +55,7 @@ The following `environment` variables are supported.  See https://www.cockroachl
 
 ## Building the Image
 ```bash
+./mvnw clean package
 docker build --no-cache -t timveil/cockroachdb-remote-client:latest .
 ```
 

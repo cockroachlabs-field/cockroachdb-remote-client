@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="RemoteClientApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="cockroachdb-remote-client" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.crdb.docker.RemoteClientApplication" />
+    <option name="ENABLE_LAUNCH_OPTIMIZATION" value="false" />
+    <option name="ENABLE_JMX_AGENT" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <envs>
+      <env name="COCKROACH_HOST" value="localhost:25267" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
