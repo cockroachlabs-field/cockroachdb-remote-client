@@ -75,10 +75,10 @@ public class RemoteClientApplication implements ApplicationRunner {
 		log.debug("{} is [{}]", COCKROACH_LICENSE_KEY, licenseKey);
 		log.debug("{} is [{}]", COCKROACH_INIT, initCluster);
 
-		if (initCluster) {
+		//if (initCluster) {
 			Runtime rt = Runtime.getRuntime();
-			Process ps = rt.exec("path to my executable.exe");
-		}
+			Process ps = rt.exec("./cockroach ");
+		//}
 
 	}
 }

@@ -56,17 +56,17 @@ The following `environment` variables are supported.  See https://www.cockroachl
 ## Building the Image
 ```bash
 ./mvnw clean package
-docker build --no-cache -t timveil/cockroachdb-remote-client:latest .
+docker build --no-cache -t timveil/cockroachdb-remote-client:java .
 ```
 
 ## Publishing the Image
 ```bash
-docker push timveil/cockroachdb-remote-client:latest
+docker push timveil/cockroachdb-remote-client:java
 ```
 
 ## Running the Image
 ```bash
-docker run -it timveil/cockroachdb-remote-client:latest
+docker run -it timveil/cockroachdb-remote-client:java
 ```
 
 running the image with environment variables
@@ -75,5 +75,5 @@ docker run \
     --env COCKROACH_HOST=localhost:26257 \
     --env COCKROACH_INSECURE=true \
     --env DATABASE_NAME=test \
-    -it timveil/cockroachdb-remote-client:latest
+    -it timveil/cockroachdb-remote-client:java
 ```
