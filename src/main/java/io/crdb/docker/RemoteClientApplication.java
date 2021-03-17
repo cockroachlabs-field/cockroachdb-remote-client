@@ -56,11 +56,11 @@ public class RemoteClientApplication implements ApplicationRunner {
 
 		final boolean initCluster = env.getProperty(COCKROACH_INIT, Boolean.class, Boolean.FALSE);
 
-		log.debug("{} is [{}], CockroachDB will supply a default value if none is provided", COCKROACH_HOST, host);
-		log.debug("{} is [{}], CockroachDB will supply a default value if none is provided", COCKROACH_PORT, port);
-		log.debug("{} is [{}], CockroachDB will supply a default value if none is provided", COCKROACH_USER, user);
-		log.debug("{} is [{}], CockroachDB will supply a default value if none is provided", COCKROACH_INSECURE, insecure);
-		log.debug("{} is [{}], CockroachDB will supply a default value if none is provided", COCKROACH_CERTS_DIR, certsDir);
+		log.debug("{} is [{}]", COCKROACH_HOST, host);
+		log.debug("{} is [{}]", COCKROACH_PORT, port);
+		log.debug("{} is [{}]", COCKROACH_USER, user);
+		log.debug("{} is [{}]", COCKROACH_INSECURE, insecure);
+		log.debug("{} is [{}]", COCKROACH_CERTS_DIR, certsDir);
 
 		log.debug("{} is [{}]", DATABASE_NAME, databaseName);
 		log.debug("{} is [{}]", DATABASE_USER, databaseUser);
