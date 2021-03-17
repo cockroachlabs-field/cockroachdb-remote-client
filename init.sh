@@ -47,6 +47,7 @@ if [[ -n "$SERIAL_NORMALIZATION" ]]; then
   ./cockroach sql --execute="SET CLUSTER SETTING sql.defaults.serial_normalization = '${SERIAL_NORMALIZATION}';"
 fi
 
+echo "updating cluster setting 'server.remote_debugging.mode'..."
 ./cockroach sql --execute="SET CLUSTER SETTING server.remote_debugging.mode = 'any';"
 
 if [ -n "$DATABASE_USER" ] && [ -n "$DATABASE_PASSWORD" ] && [ -n "$DATABASE_NAME" ]; then
