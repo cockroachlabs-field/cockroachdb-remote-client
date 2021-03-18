@@ -87,11 +87,12 @@ public class RemoteClientApplication implements ApplicationRunner {
             //environment.forEach((key, value) -> log.debug(key + value));
             handleProcess(builder);
 
-            TimeUnit.SECONDS.sleep(20);
+//            log.debug("application will sleep briefly...");
+//            TimeUnit.SECONDS.sleep(20);
         }
 
         if (StringUtils.hasText(databaseName)) {
-            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "sql",  String.format("--execute=\"CREATE DATABASE IF NOT EXISTS %s;\"", databaseName));
+            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "sql",  "--execute", String.format("CREATE DATABASE IF NOT EXISTS %s", databaseName));
             handleProcess(builder);
         }
 
@@ -99,34 +100,17 @@ public class RemoteClientApplication implements ApplicationRunner {
 
     private void handleProcess(ProcessBuilder builder) {
 
+        builder.inheritIO();
+
         log.debug("starting command");
 
         try {
+
             Process process = builder.start();
+            int exitCode = process.waitFor();
+            log.debug("command exited with value [{}]", exitCode);
 
-            try {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        log.debug(line);
-                    }
-                }
-
-                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                    String line;
-                    while ((line = errorReader.readLine()) != null) {
-                        log.error(line);
-                    }
-                }
-
-            } finally {
-                log.debug("destroying process");
-                process.destroy();
-
-                int exitValue = process.exitValue();
-                log.debug("process exited with value [{}]", exitValue);
-            }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             log.error(e.getMessage(), e);
         }
     }
