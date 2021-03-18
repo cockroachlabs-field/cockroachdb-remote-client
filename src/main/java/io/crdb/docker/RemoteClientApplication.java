@@ -90,6 +90,8 @@ public class RemoteClientApplication implements ApplicationRunner {
             handleProcess(builder);
         }
 
+        handleProcess(new ProcessBuilder("/cockroach", "sql", "--execute", "SET CLUSTER SETTING server.remote_debugging.mode = 'any'"));
+
         if (StringUtils.hasText(databaseName)) {
             List<String> commands = new ArrayList<>();
             commands.add("/cockroach");
@@ -130,8 +132,6 @@ public class RemoteClientApplication implements ApplicationRunner {
             ProcessBuilder builder = new ProcessBuilder(commands);
             handleProcess(builder);
         }
-
-        handleProcess(new ProcessBuilder("/cockroach", "sql", "--execute", "SET CLUSTER SETTING server.remote_debugging.mode = 'any'"));
 
     }
 
