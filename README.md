@@ -33,7 +33,7 @@ services:
     hostname: crdb-init
     image: timveil/cockroachdb-remote-client:latest
     environment:
-      - COCKROACH_HOST=lb:26257
+      - COCKROACH_HOST=crdb-0:26257
       - COCKROACH_INSECURE=true
       - DATABASE_NAME=test
     depends_on:
@@ -51,22 +51,22 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `DATABASE_PASSWORD` - Password for `DATABASE_USER`.
 * `COCKROACH_ORG` - The value of the `cluster.organization` setting.
 * `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting.
-* `SERIAL_NORMALIZATION` - The value of the `sql.defaults.serial_normalization` setting.
+* `COCKROACH_INIT` - Initializes the CockroachDB cluster with the `cockroach init` command.
 
 ## Building the Image
 ```bash
 ./mvnw clean package
-docker build --no-cache -t timveil/cockroachdb-remote-client:java .
+docker build --no-cache -t timveil/cockroachdb-remote-client:latest .
 ```
 
 ## Publishing the Image
 ```bash
-docker push timveil/cockroachdb-remote-client:java
+docker push timveil/cockroachdb-remote-client:latest
 ```
 
 ## Running the Image
 ```bash
-docker run -it timveil/cockroachdb-remote-client:java
+docker run -it timveil/cockroachdb-remote-client:latest
 ```
 
 running the image with environment variables
@@ -76,5 +76,5 @@ docker run \
     --env COCKROACH_INSECURE=true \
     --env DATABASE_NAME=test \
     --env COCKROACH_INIT=true \
-    -it timveil/cockroachdb-remote-client:java
+    -it timveil/cockroachdb-remote-client:latest
 ```
