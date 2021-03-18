@@ -75,5 +75,6 @@ docker run \
     --env COCKROACH_HOST=localhost:26257 \
     --env COCKROACH_INSECURE=true \
     --env DATABASE_NAME=test \
+    --env COCKROACH_INIT=true \
     -it timveil/cockroachdb-remote-client:java
 ```

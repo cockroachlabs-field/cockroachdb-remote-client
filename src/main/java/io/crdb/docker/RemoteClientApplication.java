@@ -5,80 +5,129 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.core.env.Environment;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class RemoteClientApplication implements ApplicationRunner {
 
-	private static final Logger log = LoggerFactory.getLogger(RemoteClientApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteClientApplication.class);
 
-	private static final String COCKROACH_HOST = "COCKROACH_HOST";
-	private static final String COCKROACH_PORT = "COCKROACH_PORT";
-	private static final String COCKROACH_USER = "COCKROACH_USER";
-	private static final String COCKROACH_INSECURE = "COCKROACH_INSECURE";
-	private static final String COCKROACH_CERTS_DIR = "COCKROACH_CERTS_DIR";
-	private static final String DATABASE_NAME = "DATABASE_NAME";
-	private static final String DATABASE_USER = "DATABASE_USER";
-	private static final String DATABASE_PASSWORD = "DATABASE_PASSWORD";
-	private static final String COCKROACH_ORG = "COCKROACH_ORG";
-	private static final String COCKROACH_LICENSE_KEY = "COCKROACH_LICENSE_KEY";
-	private static final String COCKROACH_INIT = "COCKROACH_INIT";
+    private static final String COCKROACH_HOST = "COCKROACH_HOST";
+    private static final String COCKROACH_PORT = "COCKROACH_PORT";
+    private static final String COCKROACH_USER = "COCKROACH_USER";
+    private static final String COCKROACH_INSECURE = "COCKROACH_INSECURE";
+    private static final String COCKROACH_CERTS_DIR = "COCKROACH_CERTS_DIR";
 
-	public static void main(String[] args) {
-		SpringApplication.run(RemoteClientApplication.class, args);
-	}
+    private static final String DATABASE_NAME = "DATABASE_NAME";
+    private static final String DATABASE_USER = "DATABASE_USER";
+    private static final String DATABASE_PASSWORD = "DATABASE_PASSWORD";
+    private static final String COCKROACH_ORG = "COCKROACH_ORG";
+    private static final String COCKROACH_LICENSE_KEY = "COCKROACH_LICENSE_KEY";
+    private static final String COCKROACH_INIT = "COCKROACH_INIT";
 
-	@Autowired
-	private Environment env;
+    public static void main(String[] args) {
+        SpringApplication.run(RemoteClientApplication.class, args);
+    }
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
+    @Autowired
+    private Environment env;
 
-		// these values/parameters correspond to Cockroach Connection Environment variables
-		final String host = env.getProperty(COCKROACH_HOST);
-		final Integer port = env.getProperty(COCKROACH_PORT, Integer.class);
-		final String user = env.getProperty(COCKROACH_USER);
-		final Boolean insecure = env.getProperty(COCKROACH_INSECURE, Boolean.class);
-		final String certsDir = env.getProperty(COCKROACH_CERTS_DIR);
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
 
-		// these values/parameters do not have corresponding conneciton
-		final String databaseName = env.getProperty(DATABASE_NAME);
-		final String databaseUser = env.getProperty(DATABASE_USER);
-		final String databasePassword = env.getProperty(DATABASE_PASSWORD);
-		final String licenseOrg = env.getProperty(COCKROACH_ORG);
-		final String licenseKey = env.getProperty(COCKROACH_LICENSE_KEY);
+        // these values/parameters correspond to Cockroach Connection Environment variables
+        final String host = env.getProperty(COCKROACH_HOST);
+        final Integer port = env.getProperty(COCKROACH_PORT, Integer.class);
+        final String user = env.getProperty(COCKROACH_USER);
+        final Boolean insecure = env.getProperty(COCKROACH_INSECURE, Boolean.class);
+        final String certsDir = env.getProperty(COCKROACH_CERTS_DIR);
 
-		final boolean initCluster = env.getProperty(COCKROACH_INIT, Boolean.class, Boolean.FALSE);
+        // these values/parameters do not have corresponding conneciton
+        final String databaseName = env.getProperty(DATABASE_NAME);
+        final String databaseUser = env.getProperty(DATABASE_USER);
+        final String databasePassword = env.getProperty(DATABASE_PASSWORD);
+        final String licenseOrg = env.getProperty(COCKROACH_ORG);
+        final String licenseKey = env.getProperty(COCKROACH_LICENSE_KEY);
 
-		log.debug("{} is [{}]", COCKROACH_HOST, host);
-		log.debug("{} is [{}]", COCKROACH_PORT, port);
-		log.debug("{} is [{}]", COCKROACH_USER, user);
-		log.debug("{} is [{}]", COCKROACH_INSECURE, insecure);
-		log.debug("{} is [{}]", COCKROACH_CERTS_DIR, certsDir);
+        final boolean initCluster = env.getProperty(COCKROACH_INIT, Boolean.class, Boolean.FALSE);
 
-		log.debug("{} is [{}]", DATABASE_NAME, databaseName);
-		log.debug("{} is [{}]", DATABASE_USER, databaseUser);
+        log.info("{} is [{}]", COCKROACH_HOST, host);
+        log.info("{} is [{}]", COCKROACH_PORT, port);
+        log.info("{} is [{}]", COCKROACH_USER, user);
+        log.info("{} is [{}]", COCKROACH_INSECURE, insecure);
+        log.info("{} is [{}]", COCKROACH_CERTS_DIR, certsDir);
 
-		if (databasePassword != null) {
-			log.debug("{} is [{}]", DATABASE_PASSWORD, "********");
-		} else {
-			log.debug("{} was not provided", DATABASE_PASSWORD);
-		}
+        log.info("{} is [{}]", DATABASE_NAME, databaseName);
+        log.info("{} is [{}]", DATABASE_USER, databaseUser);
 
-		log.debug("{} is [{}]", COCKROACH_ORG, licenseOrg);
-		log.debug("{} is [{}]", COCKROACH_LICENSE_KEY, licenseKey);
-		log.debug("{} is [{}]", COCKROACH_INIT, initCluster);
+        if (databasePassword != null) {
+            log.info("{} is [{}]", DATABASE_PASSWORD, "********");
+        } else {
+            log.info("{} was not provided", DATABASE_PASSWORD);
+        }
 
-		//if (initCluster) {
-			Runtime rt = Runtime.getRuntime();
-			Process ps = rt.exec("./cockroach ");
-		//}
+        log.info("{} is [{}]", COCKROACH_ORG, licenseOrg);
+        log.info("{} is [{}]", COCKROACH_LICENSE_KEY, licenseKey);
+        log.info("{} is [{}]", COCKROACH_INIT, initCluster);
 
-	}
+        if (initCluster) {
+            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "init",  "--disable-cluster-name-verification");
+            //Map<String, String> environment = builder.environment();
+            //environment.forEach((key, value) -> log.debug(key + value));
+            handleProcess(builder);
+
+            TimeUnit.SECONDS.sleep(20);
+        }
+
+        if (StringUtils.hasText(databaseName)) {
+            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "sql",  String.format("--execute=\"CREATE DATABASE IF NOT EXISTS %s;\"", databaseName));
+            handleProcess(builder);
+        }
+
+    }
+
+    private void handleProcess(ProcessBuilder builder) {
+
+        log.debug("starting command");
+
+        try {
+            Process process = builder.start();
+
+            try {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        log.debug(line);
+                    }
+                }
+
+                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                    String line;
+                    while ((line = errorReader.readLine()) != null) {
+                        log.error(line);
+                    }
+                }
+
+            } finally {
+                log.debug("destroying process");
+                process.destroy();
+
+                int exitValue = process.exitValue();
+                log.debug("process exited with value [{}]", exitValue);
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 }
