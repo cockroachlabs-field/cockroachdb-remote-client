@@ -11,12 +11,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class RemoteClientApplication implements ApplicationRunner {
@@ -81,20 +78,63 @@ public class RemoteClientApplication implements ApplicationRunner {
         log.info("{} is [{}]", COCKROACH_LICENSE_KEY, licenseKey);
         log.info("{} is [{}]", COCKROACH_INIT, initCluster);
 
-        if (initCluster) {
-            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "init",  "--disable-cluster-name-verification");
-            //Map<String, String> environment = builder.environment();
-            //environment.forEach((key, value) -> log.debug(key + value));
-            handleProcess(builder);
+        //Map<String, String> environment = new ProcessBuilder().environment();
+        //environment.forEach((key, value) -> log.debug(key + value));
 
-//            log.debug("application will sleep briefly...");
-//            TimeUnit.SECONDS.sleep(20);
+        if (initCluster) {
+            List<String> commands = new ArrayList<>();
+            commands.add("/cockroach");
+            commands.add("init");
+            commands.add("--disable-cluster-name-verification");
+
+            ProcessBuilder builder = new ProcessBuilder(commands);
+            handleProcess(builder);
         }
 
         if (StringUtils.hasText(databaseName)) {
-            ProcessBuilder builder = new ProcessBuilder("/cockroach",  "sql",  "--execute", String.format("CREATE DATABASE IF NOT EXISTS %s", databaseName));
+            List<String> commands = new ArrayList<>();
+            commands.add("/cockroach");
+            commands.add("sql");
+            commands.add("--execute");
+            commands.add(String.format("CREATE DATABASE IF NOT EXISTS %s", databaseName));
+
+            ProcessBuilder builder = new ProcessBuilder(commands);
             handleProcess(builder);
         }
+
+
+        if (StringUtils.hasText(databaseName) && StringUtils.hasText(databaseUser) && StringUtils.hasText(databasePassword)) {
+
+            List<String> commands = new ArrayList<>();
+            commands.add("/cockroach");
+            commands.add("sql");
+            commands.add("--execute");
+            commands.add(String.format("CREATE USER IF NOT EXISTS %s WITH PASSWORD '%s'", databaseUser, databasePassword));
+            commands.add("--execute");
+            commands.add(String.format("GRANT ALL ON DATABASE %s TO %s", databaseName, databaseUser));
+            commands.add("--execute");
+            commands.add(String.format("GRANT admin TO %s", databaseUser));
+
+            ProcessBuilder builder = new ProcessBuilder(commands);
+            handleProcess(builder);
+        }
+
+
+        if (StringUtils.hasText(licenseOrg) && StringUtils.hasText(licenseKey)) {
+
+            List<String> commands = new ArrayList<>();
+            commands.add("/cockroach");
+            commands.add("sql");
+            commands.add("--execute");
+            commands.add(String.format("SET CLUSTER SETTING cluster.organization = '%s'", licenseOrg));
+            commands.add("--execute");
+            commands.add(String.format("SET CLUSTER SETTING enterprise.license = '%s'", licenseKey));
+
+            ProcessBuilder builder = new ProcessBuilder(commands);
+            handleProcess(builder);
+        }
+
+        handleProcess(new ProcessBuilder("/cockroach", "sql", "--execute", "SET CLUSTER SETTING server.remote_debugging.mode = 'any'"));
 
     }
 
@@ -102,7 +142,7 @@ public class RemoteClientApplication implements ApplicationRunner {
 
         builder.inheritIO();
 
-        log.debug("starting command");
+        log.debug("starting command... {}", builder.command().toString());
 
         try {
 
