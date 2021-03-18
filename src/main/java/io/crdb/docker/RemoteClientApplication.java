@@ -147,7 +147,7 @@ public class RemoteClientApplication implements ApplicationRunner {
         int exitCode = process.waitFor();
 
         if (exitCode != 0) {
-            throw new IllegalStateException(String.format("command %s exited ABNORMALLY with value [%d]", command, exitCode));
+            throw new RuntimeException(String.format("the following command exited ABNORMALLY with code [%d]: %s", exitCode, command));
         } else {
             log.debug("command exited SUCCESSFULLY with value [{}]", exitCode);
         }
