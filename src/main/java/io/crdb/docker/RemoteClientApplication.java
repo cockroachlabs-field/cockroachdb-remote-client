@@ -43,7 +43,7 @@ public class RemoteClientApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        // these values/parameters correspond to CockroachDB Connection Environment variables
+        // these values/parameters correspond to supported CockroachDB Environment variables
         final String host = env.getProperty(COCKROACH_HOST);
         final Integer port = env.getProperty(COCKROACH_PORT, Integer.class);
         final String user = env.getProperty(COCKROACH_USER);
@@ -66,19 +66,11 @@ public class RemoteClientApplication implements ApplicationRunner {
 
         log.info("{} is [{}]", DATABASE_NAME, databaseName);
         log.info("{} is [{}]", DATABASE_USER, databaseUser);
-
-        if (databasePassword != null) {
-            log.info("{} is [{}]", DATABASE_PASSWORD, "********");
-        } else {
-            log.info("{} was not provided", DATABASE_PASSWORD);
-        }
+        log.info("{} is [{}]", DATABASE_PASSWORD, databasePassword);
 
         log.info("{} is [{}]", COCKROACH_ORG, licenseOrg);
         log.info("{} is [{}]", COCKROACH_LICENSE_KEY, licenseKey);
         log.info("{} is [{}]", COCKROACH_INIT, initCluster);
-
-        //Map<String, String> environment = new ProcessBuilder().environment();
-        //environment.forEach((key, value) -> log.debug(key + value));
 
         if (initCluster) {
             List<String> commands = new ArrayList<>();
