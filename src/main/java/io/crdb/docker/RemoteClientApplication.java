@@ -43,20 +43,19 @@ public class RemoteClientApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        // these values/parameters correspond to Cockroach Connection Environment variables
+        // these values/parameters correspond to CockroachDB Connection Environment variables
         final String host = env.getProperty(COCKROACH_HOST);
         final Integer port = env.getProperty(COCKROACH_PORT, Integer.class);
         final String user = env.getProperty(COCKROACH_USER);
         final Boolean insecure = env.getProperty(COCKROACH_INSECURE, Boolean.class);
         final String certsDir = env.getProperty(COCKROACH_CERTS_DIR);
 
-        // these values/parameters do not have corresponding conneciton
+        // these values/parameters do not have corresponding CockroachDB Environment variables
         final String databaseName = env.getProperty(DATABASE_NAME);
         final String databaseUser = env.getProperty(DATABASE_USER);
         final String databasePassword = env.getProperty(DATABASE_PASSWORD);
         final String licenseOrg = env.getProperty(COCKROACH_ORG);
         final String licenseKey = env.getProperty(COCKROACH_LICENSE_KEY);
-
         final boolean initCluster = env.getProperty(COCKROACH_INIT, Boolean.class, Boolean.FALSE);
 
         log.info("{} is [{}]", COCKROACH_HOST, host);
@@ -104,7 +103,6 @@ public class RemoteClientApplication implements ApplicationRunner {
 
 
         if (StringUtils.hasText(databaseName) && StringUtils.hasText(databaseUser) && StringUtils.hasText(databasePassword)) {
-
             List<String> commands = new ArrayList<>();
             commands.add("/cockroach");
             commands.add("sql");
@@ -121,7 +119,6 @@ public class RemoteClientApplication implements ApplicationRunner {
 
 
         if (StringUtils.hasText(licenseOrg) && StringUtils.hasText(licenseKey)) {
-
             List<String> commands = new ArrayList<>();
             commands.add("/cockroach");
             commands.add("sql");
@@ -138,20 +135,22 @@ public class RemoteClientApplication implements ApplicationRunner {
 
     }
 
-    private void handleProcess(ProcessBuilder builder) {
+    private void handleProcess(ProcessBuilder builder) throws IOException, InterruptedException {
 
         builder.inheritIO();
 
-        log.debug("starting command... {}", builder.command().toString());
+        String command = builder.command().toString();
 
-        try {
+        log.debug("starting command... {}", command);
 
-            Process process = builder.start();
-            int exitCode = process.waitFor();
-            log.debug("command exited with value [{}]", exitCode);
+        Process process = builder.start();
+        int exitCode = process.waitFor();
 
-        } catch (IOException | InterruptedException e) {
-            log.error(e.getMessage(), e);
+        if (exitCode != 0) {
+            throw new IllegalStateException(String.format("command %s exited ABNORMALLY with value [%d]", command, exitCode));
+        } else {
+            log.debug("command exited SUCCESSFULLY with value [{}]", exitCode);
         }
+
     }
 }
