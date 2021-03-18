@@ -149,7 +149,7 @@ public class RemoteClientApplication implements ApplicationRunner {
         if (exitCode != 0) {
             throw new RuntimeException(String.format("the following command exited ABNORMALLY with code [%d]: %s", exitCode, command));
         } else {
-            log.debug("command exited SUCCESSFULLY with value [{}]", exitCode);
+            log.debug("command exited SUCCESSFULLY with code [{}]", exitCode);
         }
 
     }
