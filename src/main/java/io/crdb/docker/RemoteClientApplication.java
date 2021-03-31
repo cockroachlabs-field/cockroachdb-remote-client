@@ -95,12 +95,18 @@ public class RemoteClientApplication implements ApplicationRunner {
         }
 
 
-        if (StringUtils.hasText(databaseName) && StringUtils.hasText(databaseUser) && StringUtils.hasText(databasePassword)) {
+        if (StringUtils.hasText(databaseName) && StringUtils.hasText(databaseUser)) {
             List<String> commands = new ArrayList<>();
             commands.add("/cockroach");
             commands.add("sql");
             commands.add("--execute");
-            commands.add(String.format("CREATE USER IF NOT EXISTS %s WITH PASSWORD '%s'", databaseUser, databasePassword));
+
+            if(StringUtils.hasText(databasePassword)) {
+                commands.add(String.format("CREATE USER IF NOT EXISTS %s WITH PASSWORD '%s'", databaseUser, databasePassword));
+            } else {
+                commands.add(String.format("CREATE USER IF NOT EXISTS %s WITH PASSWORD NULL", databaseUser));
+            }
+
             commands.add("--execute");
             commands.add(String.format("GRANT ALL ON DATABASE %s TO %s", databaseName, databaseUser));
             commands.add("--execute");
