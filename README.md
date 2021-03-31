@@ -48,7 +48,7 @@ The following `environment` variables are supported.  See https://www.cockroachl
 * `COCKROACH_CERTS_DIR` - The path to the certificate directory containing the CA and client certificates and client key.
 * `DATABASE_NAME` - Name of database to create.
 * `DATABASE_USER` - Name of new database user to create.  __Important__, this user will be created as a CockroachDB `admin`.
-* `DATABASE_PASSWORD` - Password for `DATABASE_USER`.
+* `DATABASE_PASSWORD` - Password for `DATABASE_USER`.  If not provided the password will be set to `NULL` preventing the user from using [password based authentication](https://www.cockroachlabs.com/docs/v20.2/create-user.html#prevent-a-user-from-using-password-authentication).
 * `COCKROACH_ORG` - The value of the `cluster.organization` setting.
 * `COCKROACH_LICENSE_KEY` - The value of the `enterprise.license` setting.
 * `COCKROACH_INIT` - Initializes the CockroachDB cluster with the `cockroach init` command.

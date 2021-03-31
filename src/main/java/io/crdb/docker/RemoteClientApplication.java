@@ -83,6 +83,19 @@ public class RemoteClientApplication implements ApplicationRunner {
 
         handleProcess(new ProcessBuilder("/cockroach", "sql", "--execute", "SET CLUSTER SETTING server.remote_debugging.mode = 'any'"));
 
+        if (StringUtils.hasText(licenseOrg) && StringUtils.hasText(licenseKey)) {
+            List<String> commands = new ArrayList<>();
+            commands.add("/cockroach");
+            commands.add("sql");
+            commands.add("--execute");
+            commands.add(String.format("SET CLUSTER SETTING cluster.organization = '%s'", licenseOrg));
+            commands.add("--execute");
+            commands.add(String.format("SET CLUSTER SETTING enterprise.license = '%s'", licenseKey));
+
+            ProcessBuilder builder = new ProcessBuilder(commands);
+            handleProcess(builder);
+        }
+
         if (StringUtils.hasText(databaseName)) {
             List<String> commands = new ArrayList<>();
             commands.add("/cockroach");
@@ -93,7 +106,6 @@ public class RemoteClientApplication implements ApplicationRunner {
             ProcessBuilder builder = new ProcessBuilder(commands);
             handleProcess(builder);
         }
-
 
         if (StringUtils.hasText(databaseName) && StringUtils.hasText(databaseUser)) {
             List<String> commands = new ArrayList<>();
@@ -111,20 +123,6 @@ public class RemoteClientApplication implements ApplicationRunner {
             commands.add(String.format("GRANT ALL ON DATABASE %s TO %s", databaseName, databaseUser));
             commands.add("--execute");
             commands.add(String.format("GRANT admin TO %s", databaseUser));
-
-            ProcessBuilder builder = new ProcessBuilder(commands);
-            handleProcess(builder);
-        }
-
-
-        if (StringUtils.hasText(licenseOrg) && StringUtils.hasText(licenseKey)) {
-            List<String> commands = new ArrayList<>();
-            commands.add("/cockroach");
-            commands.add("sql");
-            commands.add("--execute");
-            commands.add(String.format("SET CLUSTER SETTING cluster.organization = '%s'", licenseOrg));
-            commands.add("--execute");
-            commands.add(String.format("SET CLUSTER SETTING enterprise.license = '%s'", licenseKey));
 
             ProcessBuilder builder = new ProcessBuilder(commands);
             handleProcess(builder);
